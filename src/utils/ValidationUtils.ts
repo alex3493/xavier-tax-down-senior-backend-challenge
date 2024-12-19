@@ -14,7 +14,7 @@ export class ValidationUtils {
    * Throws EmptyNameException if the name is empty.
    * Throws NameTooShortException if the name is shorter than 3 characters.
    */
-  static validateName(name: string): void {
+  static validateName(name: unknown): void {
     if (typeof name !== "string") {
       throw new InvalidTypeException("name", "string", name);
     }
@@ -31,7 +31,7 @@ export class ValidationUtils {
    * Throws InvalidEmailFormatException if the email is not in the correct format.
    * @param {string} email - The email to validate format
    */
-  static validateEmailFormat(email: string): void {
+  static validateEmailFormat(email: unknown): void {
     if (typeof email !== "string") {
       throw new InvalidTypeException("email", "string", email);
     }
@@ -66,7 +66,7 @@ export class ValidationUtils {
    * @param {CustomerRepositoryInterface} customerRepository - The repository to check for existing customers
    */
   static async validateCustomerExists(
-    id: string,
+    id: unknown,
     customerRepository: CustomerRepositoryInterface
   ): Promise<void> {
     if (typeof id !== "string") {
@@ -92,7 +92,7 @@ export class ValidationUtils {
    * Throws InvalidTypeException if the amount is not a number.
    * @param {number} amount - The amount to validate
    */
-  static validateAmount(amount: number): void {
+  static validateAmount(amount: unknown): void {
     if (typeof amount !== "number" || isNaN(amount)) {
       throw new InvalidTypeException("amount", "number", amount);
     }
