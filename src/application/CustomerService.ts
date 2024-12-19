@@ -45,7 +45,7 @@ export class CustomerService {
       availableCredit
     );
 
-    // Save the new customer to the repository and return it
+    // Save the new customer and return it
     return await this.customerRepository.create(customer);
   }
 
@@ -106,9 +106,8 @@ export class CustomerService {
       customer.setAvailableCredit(availableCredit);
     }
 
-    // Save the updated customer
-    await this.customerRepository.update(customer);
-    return customer;
+    // Save the updated customer and return it
+    return await this.customerRepository.update(customer);
   }
 
   /**
