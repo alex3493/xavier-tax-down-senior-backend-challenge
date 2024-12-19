@@ -38,15 +38,15 @@ export class CustomerService {
 
     // Create a new Customer object (validation occurs in the Customer constructor)
     const customer = new Customer(
+      // Generated ID will be replaced with "insertedId" when storing in MongoDB.
       this.generateUniqueId(),
       name,
       email,
       availableCredit
     );
 
-    // Save the new customer to the repository
-    await this.customerRepository.create(customer);
-    return customer;
+    // Save the new customer to the repository and return it
+    return await this.customerRepository.create(customer);
   }
 
   /**
