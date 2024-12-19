@@ -1,0 +1,10 @@
+{
+  "verbose": true,
+  "watch": [
+    "src/"
+  ],
+  "ignore": [
+    "*.test.ts"
+  ],
+  "ext": "ts,json"
+}

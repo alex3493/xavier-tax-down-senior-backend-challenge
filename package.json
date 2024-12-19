@@ -7,7 +7,7 @@
     "startExpress": "node dist/infrastructure/Server.js",
     "start": "serverless offline",
     "build": "tsc",
-    "devExpress": "ts-node src/infrastructure/Server.ts",
+    "devExpress": "nodemon src/infrastructure/Server.ts",
     "dev": "serverless offline",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -16,15 +16,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cubiczx/TaxDown-senior-backend-challenge.git"
+    "url": "git+https://github.com/alex3493/xavier-tax-down-senior-backend-challenge.git"
   },
   "keywords": [],
   "author": "Xavier Palacín Ayuso",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cubiczx/TaxDown-senior-backend-challenge/issues"
+    "url": "https://github.com/alex3493/xavier-tax-down-senior-backend-challenge/issues"
   },
-  "homepage": "https://github.com/cubiczx/TaxDown-senior-backend-challenge#readme",
+  "homepage": "https://github.com/alex3493/xavier-tax-down-senior-backend-challenge#readme",
   "dependencies": {
     "aws-serverless-express": "^3.4.0",
     "dotenv": "^16.4.5",
@@ -43,6 +43,7 @@
     "@types/swagger-ui-dist": "^3.30.5",
     "@types/swagger-ui-express": "^4.1.6",
     "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
     "serverless-offline": "^14.3.3",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
