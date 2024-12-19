@@ -40,6 +40,7 @@ describe("MongoDBCustomerRepository", () => {
     expect(result).toHaveProperty("ok", 1);
   });
 
+  // TODO: Check why this test is skipped.
   it.skip("should disconnect from Mongo", async () => {
     await mongoDBCustomerRepository.disconnect();
 

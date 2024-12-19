@@ -8,7 +8,7 @@ export class CustomerService {
 
   // Generates a unique ID for new customers
   private generateUniqueId(): string {
-    return Math.random().toString(36).substr(2, 9);
+    return Math.random().toString(36).substring(2, 11);
   }
 
   /**

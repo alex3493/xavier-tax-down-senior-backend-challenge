@@ -57,7 +57,7 @@ export class ValidationUtils {
     }
   }
 
-  
+
   /**
    * Validates that the provided customer id exists in the repository.
    * Throws InvalidTypeException if the id is not a string containing exactly 9 alphanumeric characters.
@@ -72,6 +72,8 @@ export class ValidationUtils {
     if (typeof id !== "string") {
       throw new InvalidTypeException("id", "string", id);
     }
+    // TODO: This check fails when we are using "database" storage for customers.
+    // MongoDB insertedId has different format (more than 9 chars).
     if (!/^[a-z0-9]{9}$/.test(id)) {
       throw new InvalidTypeException(
         "id",
