@@ -32,7 +32,7 @@ describe("InMemoryCustomerRepository", () => {
   });
 
   it("should return undefined if customer not found by ID", async () => {
-    const foundCustomer = await repository.findById("12345678a");
+    const foundCustomer = await repository.findById("1234567890abcdefghijklmn");
     expect(foundCustomer).toBeUndefined();
   });
 

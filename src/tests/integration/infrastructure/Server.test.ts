@@ -210,7 +210,7 @@ describe("CustomerController Integration Tests", () => {
     });
 
     it("should return 404 if customer not found", async () => {
-      const response = await request(app).get("/customers/12345678a");
+      const response = await request(app).get("/customers/1234567890abcdefghijklmn");
 
       expect(response.status).toBe(404);
       expect(response.body).toHaveProperty("error", "Customer not found.");
@@ -222,7 +222,7 @@ describe("CustomerController Integration Tests", () => {
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty(
         "error",
-        "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string."
+        "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string."
       );
     });
 
@@ -231,7 +231,7 @@ describe("CustomerController Integration Tests", () => {
         .spyOn(CustomerService.prototype, "findById")
         .mockResolvedValue(undefined);
 
-      const response = await request(app).get("/customers/12345678a");
+      const response = await request(app).get("/customers/1234567890abcdefghijklmn");
       expect(response.status).toBe(404);
       expect(response.body.error).toContain("Customer not found.");
 
@@ -246,7 +246,7 @@ describe("CustomerController Integration Tests", () => {
           throw new Error(errorMessage);
         });
 
-      const response = await request(app).get("/customers/12345678a");
+      const response = await request(app).get("/customers/1234567890abcdefghijklmn");
       expect(response.status).toBe(500);
       expect(response.body.error).toContain(
         "An unknown error occurred while retrieving the customer:"
@@ -311,7 +311,7 @@ describe("CustomerController Integration Tests", () => {
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty(
         "error",
-        "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string."
+        "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string."
       );
     });
 
@@ -371,7 +371,7 @@ describe("CustomerController Integration Tests", () => {
       const updateData = { name: "John Smith Updated", availableCredit: 1500 };
 
       const response = await request(app)
-        .put("/customers/12345678a")
+        .put("/customers/1234567890abcdefghijklmn")
         .send(updateData);
 
       expect(response.status).toBe(404);
@@ -490,7 +490,7 @@ describe("CustomerController Integration Tests", () => {
 
       const updateData = { name: "John Smith Updated", availableCredit: 1500 };
       const response = await request(app)
-        .put("/customers/12345678a")
+        .put("/customers/1234567890abcdefghijklmn")
         .send(updateData);
       expect(response.status).toBe(500);
       expect(response.body.error).toContain(
@@ -521,17 +521,17 @@ describe("CustomerController Integration Tests", () => {
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty(
         "error",
-        "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string."
+        "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string."
       );
     });
 
     it("should return 404 if customer does not exist", async () => {
-      const response = await request(app).delete(`/customers/12345678a`);
+      const response = await request(app).delete(`/customers/1234567890abcdefghijklmn`);
       expect(response.status).toBe(404);
     });
 
     it("should return 400 if trying to delete a non-existent customer", async () => {
-      const response = await request(app).delete("/customers/12345678a");
+      const response = await request(app).delete("/customers/1234567890abcdefghijklmn");
       expect(response.status).toBe(404);
     });
 
@@ -543,7 +543,7 @@ describe("CustomerController Integration Tests", () => {
           throw new Error(errorMessage);
         });
 
-      const response = await request(app).delete("/customers/12345678a");
+      const response = await request(app).delete("/customers/1234567890abcdefghijklmn");
       expect(response.status).toBe(500);
       expect(response.body.error).toContain(
         "An unknown error occurred when deleting customer:"
@@ -571,7 +571,7 @@ describe("CustomerController Integration Tests", () => {
     it("should throw CustomerNotFoundException if customer does not exist", async () => {
       const response = await request(app)
         .post("/customers/credit")
-        .send({ id: "12345678a", amount: 100 });
+        .send({ id: "1234567890abcdefghijklmn", amount: 100 });
       expect(response.status).toBe(404);
     });
 
@@ -658,7 +658,7 @@ describe("CustomerController Integration Tests", () => {
 
       const response = await request(app)
         .post("/customers/credit")
-        .send({ id: "12345678a", amount: 100 });
+        .send({ id: "1234567890abcdefghijklmn", amount: 100 });
 
       expect(response.status).toBe(404);
       expect(response.body).toEqual({

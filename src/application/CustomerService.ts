@@ -6,9 +6,18 @@ import { CustomerNotFoundException } from "../exceptions/CustomerNotFoundExcepti
 export class CustomerService {
   constructor(private customerRepository: CustomerRepositoryInterface) {}
 
-  // Generates a unique ID for new customers
+  /**
+   * Generates a random ID for new customer.
+   * We use joined basic random strings (10-chars log) to get 24-char long ID.
+   * @private
+   */
   private generateUniqueId(): string {
-    return Math.random().toString(36).substring(2, 11);
+    const parts = [
+      Math.random().toString(36).substring(2),
+      Math.random().toString(36).substring(2),
+      Math.random().toString(36).substring(2)
+    ]
+    return parts.join("").substring(0, 24);
   }
 
   /**

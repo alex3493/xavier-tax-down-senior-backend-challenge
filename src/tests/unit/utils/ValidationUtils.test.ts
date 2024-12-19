@@ -92,7 +92,7 @@ describe("ValidationUtils", () => {
     it("should throw CustomerNotFoundException if customer ID does not exist in repository", async () => {
       await expect(
         ValidationUtils.validateCustomerExists(
-          "12345678a",
+          "1234567890abcdefghijklmn",
           customerRepository
         )
       ).rejects.toThrow(CustomerNotFoundException);
@@ -100,14 +100,14 @@ describe("ValidationUtils", () => {
 
     it("should pass if customer exists in repository", async () => {
       const customer1 = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "John Doe",
         "john.doe@example.com",
         500
       );
       await customerRepository.create(customer1);
       await expect(
-        ValidationUtils.validateCustomerExists("12345678a", customerRepository)
+        ValidationUtils.validateCustomerExists("1234567890abcdefghijklmn", customerRepository)
       ).resolves.not.toThrow();
     });
   });

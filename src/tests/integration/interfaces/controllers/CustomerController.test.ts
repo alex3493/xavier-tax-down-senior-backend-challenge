@@ -136,7 +136,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
     it("should return 409 if email is already in use when creating a customer", async () => {
       await customerRepository.create(
         new Customer(
-          "12345678a",
+          "1234567890abcdefghijklmn",
           "Existing Customer",
           "existing@example.com",
           700
@@ -297,7 +297,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
     it("should return 200 and a list of customers", async () => {
       // Create test clients in the in-memory repository
       await customerRepository.create(
-        new Customer("12345678a", "Customer One", "one@example.com", 100)
+        new Customer("1234567890abcdefghijklmn", "Customer One", "one@example.com", 100)
       );
       await customerRepository.create(
         new Customer("23456789a", "Customer Two", "two@example.com", 200)
@@ -389,14 +389,14 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
     it("should get a customer by ID", async () => {
       // Clean the in-memory repository before each test
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
       );
       await customerRepository.create(customer);
 
-      const req = { params: { id: "12345678a" } } as unknown as Request;
+      const req = { params: { id: "1234567890abcdefghijklmn" } } as unknown as Request;
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
@@ -415,7 +415,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
     });
 
     it("should return 404 when customer not found", async () => {
-      const req = { params: { id: "12345678a" } } as unknown as Request;
+      const req = { params: { id: "1234567890abcdefghijklmn" } } as unknown as Request;
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
@@ -435,7 +435,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
         customerService.findById.bind(customerService);
       customerService.findById = jest.fn().mockReturnValue(undefined);
 
-      const req = { params: { id: "12345678a" } } as unknown as Request;
+      const req = { params: { id: "1234567890abcdefghijklmn" } } as unknown as Request;
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
@@ -464,12 +464,12 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
         error:
-          "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string.",
+          "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string.",
       });
     });
 
     it("should return a 500 error when an unexpected error occurs", async () => {
-      const req = { params: { id: "12345678a" } } as unknown as Request;
+      const req = { params: { id: "1234567890abcdefghijklmn" } } as unknown as Request;
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
@@ -504,7 +504,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
     it("should update a customer", async () => {
       // Create an initial client in the database
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -512,7 +512,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
         body: {
           name: "Updated Customer",
           email: "oneUpdated@example.com",
@@ -530,14 +530,14 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({
-          id: "12345678a",
+          id: "1234567890abcdefghijklmn",
           name: "Updated Customer",
           email: "oneUpdated@example.com",
           availableCredit: 150,
         })
       );
 
-      const updatedCustomer = await customerRepository.findById("12345678a");
+      const updatedCustomer = await customerRepository.findById("1234567890abcdefghijklmn");
       expect(updatedCustomer).toBeDefined();
       expect(updatedCustomer!.getAvailableCredit()).toBe(150);
       expect(updatedCustomer!.getName()).toBe("Updated Customer");
@@ -545,7 +545,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 404 when updating a non-existing customer", async () => {
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
         body: { name: "Updated Customer", availableCredit: 150 },
       } as unknown as Request;
       const res = {
@@ -563,7 +563,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 404 when updating a non-existing customer in findBy", async () => {
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
         body: { name: "Updated Customer", availableCredit: 150 },
       } as unknown as Request;
 
@@ -601,7 +601,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
     it("should throw CustomerNotFoundException when updating a customer that does not exist in the repository", async () => {
       // Create a valid customer to mock the update call
       const customer = new Customer(
-        "12345678a", // This ID will not exist in the in-memory repository
+        "1234567890abcdefghijklmn", // This ID will not exist in the in-memory repository
         "Valid Customer",
         "valid@example.com",
         100
@@ -627,7 +627,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
         .mockResolvedValue(undefined);
 
       const req = {
-        params: { id: "12345678a" }, // ID that will lead to CustomerNotFoundException
+        params: { id: "1234567890abcdefghijklmn" }, // ID that will lead to CustomerNotFoundException
         body: {
           name: "Updated Customer",
           email: "new@example.com",
@@ -668,13 +668,13 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
         error:
-          "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string.",
+          "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string.",
       });
     });
 
     it("should return 400 if name is not a string", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -682,7 +682,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
         body: { name: 123, availableCredit: 150 },
       } as unknown as Request;
       const res = {
@@ -701,7 +701,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 400 if name is empty", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -709,7 +709,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
         body: { name: "", availableCredit: 150 },
       } as unknown as Request;
       const res = {
@@ -727,7 +727,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 400 if name is shorter than 3 characters", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -735,7 +735,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
         body: { name: "A", availableCredit: 150 },
       } as unknown as Request;
       const res = {
@@ -753,7 +753,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 400 if email is not in a valid format", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -761,7 +761,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
         body: {
           name: "Updated Customer",
           email: "invalid-email",
@@ -783,7 +783,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 409 if email is already in use", async () => {
       const customerOne = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -798,7 +798,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customerTwo);
 
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
         body: {
           name: "Updated Customer",
           email: "two@example.com",
@@ -820,7 +820,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return a 500 error when an unexpected error occurs", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -828,7 +828,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
         body: { name: "Updated Customer", availableCredit: 150 },
       } as unknown as Request;
       const res = {
@@ -860,7 +860,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
     it("should return 204 when customer is successfully deleted", async () => {
       const customer = await customerRepository.create(
         new Customer(
-          "12345678a",
+          "1234567890abcdefghijklmn",
           "Customer to Delete",
           "delete@example.com",
           150
@@ -913,12 +913,12 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({
         error:
-          "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string.",
+          "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string.",
       });
     });
 
     it("should return 404 when deleting a non-existing customer", async () => {
-      const req = { params: { id: "12345678a" } } as unknown as Request;
+      const req = { params: { id: "1234567890abcdefghijklmn" } } as unknown as Request;
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
@@ -934,7 +934,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return a 500 error when an unexpected error occurs", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -942,7 +942,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        params: { id: "12345678a" },
+        params: { id: "1234567890abcdefghijklmn" },
       } as unknown as Request;
 
       const res = {
@@ -974,7 +974,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
   describe("CustomerController - Add credit", () => {
     it("should add credit to a customer", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -982,7 +982,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        body: { id: "12345678a", amount: 50 },
+        body: { id: "1234567890abcdefghijklmn", amount: 50 },
       } as unknown as Request;
 
       const res = {
@@ -995,7 +995,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({
-          id: "12345678a",
+          id: "1234567890abcdefghijklmn",
           name: "Customer One",
           email: "one@example.com",
           availableCredit: 150,
@@ -1005,7 +1005,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 404 when adding credit to a non-existing customer", async () => {
       const req = {
-        body: { id: "12345678a", amount: 50 },
+        body: { id: "1234567890abcdefghijklmn", amount: 50 },
       } as unknown as Request;
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -1022,7 +1022,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 404 when updating a non-existing customer in findBy", async () => {
       const req = {
-        body: { id: "12345678a", amount: 50 },
+        body: { id: "1234567890abcdefghijklmn", amount: 50 },
       } as unknown as Request;
 
       const res = {
@@ -1076,7 +1076,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 452 when adding negative credit", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -1084,7 +1084,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        body: { id: "12345678a", amount: -50 },
+        body: { id: "1234567890abcdefghijklmn", amount: -50 },
       } as unknown as Request;
 
       const res = {
@@ -1102,7 +1102,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return 400 when adding invalid credit", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -1110,7 +1110,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        body: { id: "12345678a", amount: "fifty" }, // Here you are passing a string instead of a number
+        body: { id: "1234567890abcdefghijklmn", amount: "fifty" }, // Here you are passing a string instead of a number
       } as unknown as Request;
 
       const res = {
@@ -1129,7 +1129,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
 
     it("should return a 500 error when an unexpected error occurs", async () => {
       const customer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "Customer One",
         "one@example.com",
         100
@@ -1137,7 +1137,7 @@ describe("CustomerController Integration Tests with InMemoryCustomerRepository",
       await customerRepository.create(customer);
 
       const req = {
-        body: { id: "12345678a", amount: 50 },
+        body: { id: "1234567890abcdefghijklmn", amount: 50 },
       } as unknown as Request;
       const res = {
         status: jest.fn().mockReturnThis(),

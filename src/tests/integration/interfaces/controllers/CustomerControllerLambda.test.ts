@@ -330,7 +330,7 @@ describe("CustomerControllerLambda", () => {
     it("should return 404 when customer not found", async () => {
       const event: APIGatewayProxyEvent = {
         pathParameters: {
-          id: "12345678a",
+          id: "1234567890abcdefghijklmn",
         },
         queryStringParameters: {},
         body: null,
@@ -359,7 +359,7 @@ describe("CustomerControllerLambda", () => {
       expect(result.statusCode).toBe(400);
       const response = JSON.parse(result.body);
       expect(response.error).toBe(
-        "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string."
+        "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string."
       );
     });
 
@@ -491,7 +491,7 @@ describe("CustomerControllerLambda", () => {
     it("should return 404 when updating a non-existing customer", async () => {
       const event: APIGatewayProxyEvent = {
         pathParameters: {
-          id: "12345678a",
+          id: "1234567890abcdefghijklmn",
         },
         body: JSON.stringify({
           name: "Jane Doe",
@@ -528,14 +528,14 @@ describe("CustomerControllerLambda", () => {
       expect(result.statusCode).toBe(400);
       const response = JSON.parse(result.body);
       expect(response.error).toBe(
-        "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string."
+        "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string."
       );
     });
 
     it("should return 404 throw CustomerNotFoundException when updating a customer that does not exist in the repository", async () => {
       // Create a valid customer to mock the update call
       const customer = new Customer(
-        "12345678a", // This ID will not exist in the in-memory repository
+        "1234567890abcdefghijklmn", // This ID will not exist in the in-memory repository
         "Valid Customer",
         "valid@example.com",
         100
@@ -562,7 +562,7 @@ describe("CustomerControllerLambda", () => {
 
       const event: APIGatewayProxyEvent = {
         pathParameters: {
-          id: "12345678a",
+          id: "1234567890abcdefghijklmn",
         },
         body: JSON.stringify({
           name: "Jane Doe",
@@ -922,14 +922,14 @@ describe("CustomerControllerLambda", () => {
       expect(result.statusCode).toBe(400);
       const response = JSON.parse(result.body);
       expect(response.error).toBe(
-        "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string."
+        "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string."
       );
     });
 
     it("should return 404 when deleting a non-existing customer", async () => {
       const event: APIGatewayProxyEvent = {
         pathParameters: {
-          id: "12345678a",
+          id: "1234567890abcdefghijklmn",
         },
         queryStringParameters: {},
         body: null,
@@ -1024,7 +1024,7 @@ describe("CustomerControllerLambda", () => {
     it("should return 404 when adding credit to a non-existing customer", async () => {
       const event: APIGatewayProxyEvent = {
         body: JSON.stringify({
-          id: "12345678a",
+          id: "1234567890abcdefghijklmn",
           amount: 100,
         }),
         pathParameters: {},
@@ -1054,7 +1054,7 @@ describe("CustomerControllerLambda", () => {
 
       const event: APIGatewayProxyEvent = {
         body: JSON.stringify({
-          id: "12345678a",
+          id: "1234567890abcdefghijklmn",
           amount: 100,
         }),
         pathParameters: {},
@@ -1090,7 +1090,7 @@ describe("CustomerControllerLambda", () => {
       expect(result.statusCode).toBe(400);
       const response = JSON.parse(result.body);
       expect(response.error).toBe(
-        "Invalid type for property id: expected string containing exactly 9 alphanumeric characters, but received string."
+        "Invalid type for property id: expected string containing exactly 24 alphanumeric characters, but received string."
       );
     });
 
@@ -1216,7 +1216,7 @@ describe("CustomerControllerLambda", () => {
       jest.restoreAllMocks();
       createdCustomers = [];
     });
-    
+
     /**
      * Creates a new customer with the given name, email, and available credit.
      * Asserts that the createCustomerLambda method returns 201 and saves the
