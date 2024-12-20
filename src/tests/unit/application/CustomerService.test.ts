@@ -26,7 +26,9 @@ describe("CustomerService", () => {
       findAll: jest.fn(),
       findById: jest.fn(),
       findByEmail: jest.fn(),
-      update: jest.fn(),
+      update: jest.fn().mockImplementation(
+          (customer: Customer) => customer
+      ),
       delete: jest.fn(),
       findByAvailableCredit: jest.fn(),
       clear: jest.fn(),
@@ -35,6 +37,10 @@ describe("CustomerService", () => {
   });
 
   describe("create", () => {
+    it("should pass", () => {
+      expect(true).toBe(true);
+    });
+
     it("should create a customer successfully", async () => {
       const name = "Xavier Palacín Ayuso";
       const email = "cubiczx@hotmail.com";
@@ -375,7 +381,7 @@ describe("CustomerService", () => {
     it("should throw InvalidTypeException if customer id is invalid", async () => {
       // Arrange
       const invalidId = "invalid-id";
-      
+
       (ValidationUtils.validateCustomerExists as jest.Mock).mockImplementation(
         async () => {
           throw new InvalidTypeException(
