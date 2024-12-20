@@ -135,8 +135,9 @@ export class CustomerService {
     }
 
     customer.addCredit(amount);
-    await this.customerRepository.update(customer);
-    return customer;
+
+    // Save the updated customer and return it
+    return await this.customerRepository.update(customer);
   }
 
   /**
