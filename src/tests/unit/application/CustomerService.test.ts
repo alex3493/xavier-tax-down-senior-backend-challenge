@@ -37,10 +37,6 @@ describe("CustomerService", () => {
   });
 
   describe("create", () => {
-    it("should pass", () => {
-      expect(true).toBe(true);
-    });
-
     it("should create a customer successfully", async () => {
       const name = "Xavier Palacín Ayuso";
       const email = "cubiczx@hotmail.com";

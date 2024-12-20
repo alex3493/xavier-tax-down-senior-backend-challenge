@@ -22,10 +22,11 @@ export class MongoDBCustomerRepository implements CustomerRepositoryInterface {
 
   /**
    * Connects to the MongoDB database.
-   * @returns A promise for establishing the connection.
+   * @returns A promise that resolves when the connection is established.
+   * If the connection is already established, the promise resolves immediately.
    */
-  connect(): Promise<MongoClient> {
-    return this.client.connect();
+  async connect(): Promise<void> {
+    await this.client.connect();
   }
 
   /**
