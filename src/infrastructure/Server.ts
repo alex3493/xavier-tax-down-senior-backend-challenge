@@ -6,6 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
 import {MongoDBCustomerRepository} from "./persistence/repositories/MongoDBCustomerRepository";
 import {InMemoryCustomerRepository} from "./persistence/repositories/InMemoryCustomerRepository";
+import {validateJson} from "../middleware/validateJsonMiddleware";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -13,6 +14,10 @@ dotenv.config();
 // Initialize Express
 export const app = express(); // Named export
 app.use(express.json());
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+    validateJson(req, res, next)
+});
 
 // Swagger Configuration
 const options = {

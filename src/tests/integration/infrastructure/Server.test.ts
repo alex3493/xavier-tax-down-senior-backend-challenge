@@ -264,24 +264,24 @@ describe("CustomerController Integration Tests", () => {
         email: "test.customer@example.com",
         availableCredit: 500,
       };
-    
+
       await request(app).post("/customers").send(customerData).expect(201);
-    
+
       // Ahora intenta actualizar un cliente con un ID que no existe
       const updateData = { name: "Updated Name", availableCredit: 1000 };
-    
+
       // Mockear el método findById para que devuelva undefined
       jest.spyOn(CustomerService.prototype, "findById").mockResolvedValueOnce(undefined);
-    
+
       const response = await request(app)
         .put("/customers/123456789") // ID que no existe
         .send(updateData);
-    
+
       expect(response.status).toBe(404); // Espera un 404
       expect(response.body).toEqual({
         error: new CustomerNotFoundException().message,
       });
-    
+
       // Restaurar el mock
       jest.restoreAllMocks();
     });
@@ -306,7 +306,9 @@ describe("CustomerController Integration Tests", () => {
     });
 
     it("should return 400 if id is not a valid id", async () => {
-      const response = await request(app).put("/customers/invalid-id");
+      const response = await request(app).put("/customers/invalid-id").send({
+        // Content doesn't matter. We should get 400 response right away if customer is not found.
+      });
 
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty(
