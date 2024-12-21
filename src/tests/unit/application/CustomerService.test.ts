@@ -26,7 +26,9 @@ describe("CustomerService", () => {
       findAll: jest.fn(),
       findById: jest.fn(),
       findByEmail: jest.fn(),
-      update: jest.fn(),
+      update: jest.fn().mockImplementation(
+          (customer: Customer) => customer
+      ),
       delete: jest.fn(),
       findByAvailableCredit: jest.fn(),
       clear: jest.fn(),
@@ -179,7 +181,7 @@ describe("CustomerService", () => {
   });
 
   describe("update", () => {
-    const id = "12345678a";
+    const id = "1234567890abcdefghijklmn";
     const name = "Xavier Palacín Ayuso";
     const email = "cubiczx@hotmail.com";
     const availableCredit = 2000;
@@ -234,7 +236,7 @@ describe("CustomerService", () => {
       (customerRepository.findById as jest.Mock).mockResolvedValue(null);
 
       await expect(
-        customerService.update("12345678a", name, email, availableCredit)
+        customerService.update("1234567890abcdefghijklmn", name, email, availableCredit)
       ).rejects.toThrow(CustomerNotFoundException);
     });
 
@@ -375,7 +377,7 @@ describe("CustomerService", () => {
     it("should throw InvalidTypeException if customer id is invalid", async () => {
       // Arrange
       const invalidId = "invalid-id";
-      
+
       (ValidationUtils.validateCustomerExists as jest.Mock).mockImplementation(
         async () => {
           throw new InvalidTypeException(
@@ -425,7 +427,7 @@ describe("CustomerService", () => {
 
   describe("findById", () => {
     it("should return a customer if found", async () => {
-      const id = "12345678a";
+      const id = "1234567890abcdefghijklmn";
       const mockCustomer: Customer = new Customer(
         id,
         "John Doe",
@@ -444,7 +446,7 @@ describe("CustomerService", () => {
     });
 
     it("should return undefined if customer not found", async () => {
-      const id = "12345678a";
+      const id = "1234567890abcdefghijklmn";
       (customerRepository.findById as jest.Mock).mockResolvedValue(undefined);
 
       const result = await customerService.findById(id);
@@ -498,7 +500,7 @@ describe("CustomerService", () => {
 
     it("should throw CustomerNotFoundException if customer does not exist", async () => {
       // Arrange
-      const id = "12345678a";
+      const id = "1234567890abcdefghijklmn";
       (customerRepository.findById as jest.Mock).mockResolvedValue(null); // Pretend it doesn't exist
 
       (ValidationUtils.validateCustomerExists as jest.Mock).mockImplementation(
@@ -666,7 +668,7 @@ describe("CustomerService", () => {
 
     it("should throw CustomerNotFoundException if customer does not exist", async () => {
       // Arrange
-      const id = "12345678a";
+      const id = "1234567890abcdefghijklmn";
       const amount = 500;
 
       (customerRepository.findById as jest.Mock).mockResolvedValue(null);

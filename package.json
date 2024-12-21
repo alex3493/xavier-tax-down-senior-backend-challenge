@@ -9,10 +9,10 @@
     "build": "tsc",
     "devExpress": "nodemon src/infrastructure/Server.ts",
     "dev": "serverless offline",
-    "test": "jest",
+    "test": "jest --runInBand --detectOpenHandles",
     "test:watch": "jest --watch",
-    "test:integration": "jest src/tests/integration",
-    "test:unit": "jest src/tests/unit"
+    "test:integration": "jest src/tests/integration --runInBand --detectOpenHandles",
+    "test:unit": "jest src/tests/unit --runInBand --detectOpenHandles"
   },
   "repository": {
     "type": "git",

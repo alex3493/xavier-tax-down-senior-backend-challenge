@@ -6,9 +6,18 @@ import { CustomerNotFoundException } from "../exceptions/CustomerNotFoundExcepti
 export class CustomerService {
   constructor(private customerRepository: CustomerRepositoryInterface) {}
 
-  // Generates a unique ID for new customers
+  /**
+   * Generates a random ID for new customer.
+   * We use joined basic random strings (10-chars log) to get 24-char long ID.
+   * @private
+   */
   private generateUniqueId(): string {
-    return Math.random().toString(36).substring(2, 11);
+    const parts = [
+      Math.random().toString(36).substring(2),
+      Math.random().toString(36).substring(2),
+      Math.random().toString(36).substring(2)
+    ]
+    return parts.join("").substring(0, 24);
   }
 
   /**
@@ -29,15 +38,15 @@ export class CustomerService {
 
     // Create a new Customer object (validation occurs in the Customer constructor)
     const customer = new Customer(
+      // Generated ID will be replaced with "insertedId" when storing in MongoDB.
       this.generateUniqueId(),
       name,
       email,
       availableCredit
     );
 
-    // Save the new customer to the repository
-    await this.customerRepository.create(customer);
-    return customer;
+    // Save the new customer and return it
+    return await this.customerRepository.create(customer);
   }
 
   /**
@@ -97,9 +106,8 @@ export class CustomerService {
       customer.setAvailableCredit(availableCredit);
     }
 
-    // Save the updated customer
-    await this.customerRepository.update(customer);
-    return customer;
+    // Save the updated customer and return it
+    return await this.customerRepository.update(customer);
   }
 
   /**
@@ -127,8 +135,9 @@ export class CustomerService {
     }
 
     customer.addCredit(amount);
-    await this.customerRepository.update(customer);
-    return customer;
+
+    // Save the updated customer and return it
+    return await this.customerRepository.update(customer);
   }
 
   /**

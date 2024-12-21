@@ -3,7 +3,7 @@ FROM node:alpine AS dev-image
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm ci
 
@@ -16,7 +16,7 @@ FROM node:alpine AS prod-image
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm ci
 

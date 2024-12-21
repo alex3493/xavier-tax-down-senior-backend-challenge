@@ -5,7 +5,7 @@ import { CustomerNotFoundException } from "../../../exceptions/CustomerNotFoundE
 
 export class MongoDBCustomerRepository implements CustomerRepositoryInterface {
   private client: MongoClient;
-  private dbName: string;
+  private readonly dbName: string;
   private collectionName: string;
 
   /**
@@ -43,21 +43,25 @@ export class MongoDBCustomerRepository implements CustomerRepositoryInterface {
    * @returns The created Customer object with its new ID.
    */
   async create(customer: Customer): Promise<Customer> {
-    await this.connect();
-    const db = this.client.db(this.dbName);
+    try {
+        await this.connect();
+        const db = this.client.db(this.dbName);
 
-    const result = await db.collection(this.collectionName).insertOne({
-      name: customer.getName(),
-      email: customer.getEmail(),
-      availableCredit: customer.getAvailableCredit(),
-    });
+        const result = await db.collection(this.collectionName).insertOne({
+            name: customer.getName(),
+            email: customer.getEmail(),
+            availableCredit: customer.getAvailableCredit(),
+        });
 
-    return new Customer(
-      result.insertedId.toString(),
-      customer.getName(),
-      customer.getEmail(),
-      customer.getAvailableCredit()
-    );
+        return new Customer(
+            result.insertedId.toString(),
+            customer.getName(),
+            customer.getEmail(),
+            customer.getAvailableCredit()
+        );
+    } finally {
+        await this.disconnect()
+    }
   }
 
   /**
@@ -65,19 +69,24 @@ export class MongoDBCustomerRepository implements CustomerRepositoryInterface {
    * @returns An array of Customer objects.
    */
   async findAll(): Promise<Customer[]> {
-    await this.connect();
-    const db = this.client.db(this.dbName);
-    const customers = await db.collection(this.collectionName).find().toArray();
+    try {
+        await this.connect();
+        const db = this.client.db(this.dbName);
 
-    return customers.map(
-      (customer: WithId<Document>) =>
-        new Customer(
-          customer._id.toString(),
-          customer.name,
-          customer.email,
-          customer.availableCredit
-        )
-    );
+        const customers = await db.collection(this.collectionName).find().toArray();
+
+        return customers.map(
+            (customer: WithId<Document>) =>
+                new Customer(
+                    customer._id.toString(),
+                    customer.name,
+                    customer.email,
+                    customer.availableCredit
+                )
+        );
+    } finally {
+        await this.disconnect()
+    }
   }
 
   /**
@@ -87,22 +96,27 @@ export class MongoDBCustomerRepository implements CustomerRepositoryInterface {
    * @throws CustomerNotFoundException if the customer is not found.
    */
   async findById(id: string): Promise<Customer> {
-    await this.connect();
-    const db = this.client.db(this.dbName);
-    const customer = await db
-      .collection(this.collectionName)
-      .findOne({ _id: new ObjectId(id) });
+    try {
+        await this.connect();
+        const db = this.client.db(this.dbName);
 
-    if (!customer) {
-      throw new CustomerNotFoundException();
+        const customer = await db
+            .collection(this.collectionName)
+            .findOne({_id: new ObjectId(id)});
+
+        if (!customer) {
+            throw new CustomerNotFoundException();
+        }
+
+        return new Customer(
+            customer._id.toString(),
+            customer.name,
+            customer.email,
+            customer.availableCredit
+        );
+    } finally {
+        await this.disconnect()
     }
-
-    return new Customer(
-      customer._id.toString(),
-      customer.name,
-      customer.email,
-      customer.availableCredit
-    );
   }
 
   /**
@@ -111,20 +125,25 @@ export class MongoDBCustomerRepository implements CustomerRepositoryInterface {
    * @returns The Customer object if found, or undefined if not.
    */
   async findByEmail(email: string): Promise<Customer | undefined> {
-    await this.connect();
-    const db = this.client.db(this.dbName);
-    const customer = await db
-      .collection(this.collectionName)
-      .findOne({ email });
+    try {
+        await this.connect();
+        const db = this.client.db(this.dbName);
 
-    return customer
-      ? new Customer(
-          customer._id.toString(),
-          customer.name,
-          customer.email,
-          customer.availableCredit
-        )
-      : undefined;
+        const customer = await db
+            .collection(this.collectionName)
+            .findOne({email});
+
+        return customer
+            ? new Customer(
+                customer._id.toString(),
+                customer.name,
+                customer.email,
+                customer.availableCredit
+            )
+            : undefined;
+    } finally {
+        await this.disconnect()
+    }
   }
 
   /**
@@ -134,32 +153,36 @@ export class MongoDBCustomerRepository implements CustomerRepositoryInterface {
    * @throws CustomerNotFoundException if the customer is not found.
    */
   async update(customer: Customer): Promise<Customer> {
-    await this.connect();
-    const db = this.client.db(this.dbName);
-    const objectId = new ObjectId(customer.getId());
+    try {
+        await this.connect();
+        const db = this.client.db(this.dbName);
+        const objectId = new ObjectId(customer.getId());
 
-    const result = await db.collection(this.collectionName).findOneAndUpdate(
-      { _id: objectId },
-      {
-        $set: {
-          name: customer.getName(),
-          email: customer.getEmail(),
-          availableCredit: customer.getAvailableCredit(),
-        },
-      },
-      { returnDocument: "after" }
-    );
+        const result = await db.collection(this.collectionName).findOneAndUpdate(
+            {_id: objectId},
+            {
+                $set: {
+                    name: customer.getName(),
+                    email: customer.getEmail(),
+                    availableCredit: customer.getAvailableCredit(),
+                },
+            },
+            {returnDocument: "after"}
+        );
 
-    if (!result) {
-      throw new CustomerNotFoundException();
+        if (!result) {
+            throw new CustomerNotFoundException();
+        }
+
+        return new Customer(
+            result._id.toString(),
+            result.name,
+            result.email,
+            result.availableCredit
+        );
+    } finally {
+        await this.disconnect()
     }
-
-    return new Customer(
-      result._id.toString(),
-      result.name,
-      result.email,
-      result.availableCredit
-    );
   }
 
   /**
@@ -168,14 +191,19 @@ export class MongoDBCustomerRepository implements CustomerRepositoryInterface {
    * @throws CustomerNotFoundException if the customer is not found.
    */
   async delete(id: string): Promise<void> {
-    await this.connect();
-    const db = this.client.db(this.dbName);
-    const result = await db
-      .collection(this.collectionName)
-      .deleteOne({ _id: new ObjectId(id) });
+    try {
+        await this.connect();
+        const db = this.client.db(this.dbName);
 
-    if (result.deletedCount === 0) {
-      throw new CustomerNotFoundException();
+        const result = await db
+            .collection(this.collectionName)
+            .deleteOne({_id: new ObjectId(id)});
+
+        if (result.deletedCount === 0) {
+            throw new CustomerNotFoundException();
+        }
+    } finally {
+        await this.disconnect()
     }
   }
 
@@ -185,30 +213,40 @@ export class MongoDBCustomerRepository implements CustomerRepositoryInterface {
    * @returns An array of Customer objects that meet the criteria.
    */
   async findByAvailableCredit(minCredit: number): Promise<Customer[]> {
-    await this.connect();
-    const db = this.client.db(this.dbName);
-    const customers = await db
-      .collection(this.collectionName)
-      .find({ availableCredit: { $gte: minCredit } })
-      .toArray();
+    try {
+        await this.connect();
+        const db = this.client.db(this.dbName);
 
-    return customers.map(
-      (customer: WithId<Document>) =>
-        new Customer(
-          customer._id.toString(),
-          customer.name,
-          customer.email,
-          customer.availableCredit
-        )
-    );
+        const customers = await db
+            .collection(this.collectionName)
+            .find({availableCredit: {$gte: minCredit}})
+            .toArray();
+
+        return customers.map(
+            (customer: WithId<Document>) =>
+                new Customer(
+                    customer._id.toString(),
+                    customer.name,
+                    customer.email,
+                    customer.availableCredit
+                )
+        );
+    } finally {
+        await this.disconnect()
+    }
   }
 
   /**
    * Clears all customers from the MongoDB database.
    */
   public async clear(): Promise<void> {
-    await this.connect();
-    const db = this.client.db(this.dbName);
-    await db.collection(this.collectionName).deleteMany({});
+    try {
+        await this.connect();
+        const db = this.client.db(this.dbName);
+
+        await db.collection(this.collectionName).deleteMany({});
+    } finally {
+        await this.disconnect()
+    }
   }
 }

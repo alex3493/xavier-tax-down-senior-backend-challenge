@@ -51,7 +51,7 @@ describe("CustomerController", () => {
       };
 
       const mockCustomer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "John Doe",
         "john.doe@example.com",
         1000
@@ -265,7 +265,7 @@ describe("CustomerController", () => {
   describe("CustomerController - List Customers", () => {
     it("should list all customers", async () => {
       const mockCustomers = [
-        new Customer("12345678a", "John Doe", "john.doe@example.com", 1000),
+        new Customer("1234567890abcdefghijklmn", "John Doe", "john.doe@example.com", 1000),
         new Customer("23456789a", "Jane Doe", "jane.doe@example.com", 2000),
       ];
 
@@ -318,11 +318,11 @@ describe("CustomerController", () => {
 
   describe("CustomerController - Get Customer", () => {
     it("should get a customer by ID", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
 
       const mockCustomer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "John Doe",
         "john.doe@example.com",
         1000
@@ -341,7 +341,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 404 when customer not found", async () => {
-      mockRequest.params = { id: "12345678a" };
+      mockRequest.params = { id: "1234567890abcdefghijklmn" };
 
       jest
         .spyOn(customerService, "findById")
@@ -359,7 +359,7 @@ describe("CustomerController", () => {
     });
 
     it("should return a 404 error when a customer is not found by findby", async () => {
-      mockRequest.params = { id: "12345678a" };
+      mockRequest.params = { id: "1234567890abcdefghijklmn" };
 
       jest.spyOn(customerService, "findById").mockResolvedValue(undefined);
 
@@ -396,7 +396,7 @@ describe("CustomerController", () => {
     });
 
     it("should return a 500 error when an unexpected error occurs", async () => {
-      mockRequest.params = { id: "12345678a" };
+      mockRequest.params = { id: "1234567890abcdefghijklmn" };
 
       jest
         .spyOn(customerService, "findById")
@@ -417,7 +417,7 @@ describe("CustomerController", () => {
 
   describe("CustomerController - Update Customer", () => {
     it("should update a customer", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
       mockRequest.body = {
         name: "John Updated",
@@ -426,7 +426,7 @@ describe("CustomerController", () => {
       };
 
       const updatedCustomer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "John Updated",
         "john.updated@example.com",
         1500
@@ -445,7 +445,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 404 when updating a non-existing customer", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
       mockRequest.body = {
         name: "John Doe",
@@ -494,7 +494,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 400 when updating with no valid credit", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
       mockRequest.body = {
         name: "John Doe",
@@ -525,7 +525,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 400 if name is not a string", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
       mockRequest.body = {
         name: 123,
@@ -552,7 +552,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 400 if name is empty", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
       mockRequest.body = {
         name: "",
@@ -576,7 +576,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 400 if name is shorter than 3 characters", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
       mockRequest.body = {
         name: "Jo",
@@ -600,7 +600,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 400 if email is not in a valid format", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
       mockRequest.body = {
         name: "John Doe",
@@ -624,7 +624,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 409 if email is already in use", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
       mockRequest.body = {
         name: "John Doe",
@@ -648,7 +648,7 @@ describe("CustomerController", () => {
     });
 
     it("should return a 500 error when an unexpected error occurs", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
       mockRequest.body = {
         name: "John Doe",
@@ -675,7 +675,7 @@ describe("CustomerController", () => {
 
   describe("CustomerController - Delete Customer", () => {
     it("should delete a customer", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
 
       // Mocking the delete method of customerService
@@ -732,7 +732,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 404 when deleting a non-existing customer", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
 
       jest
@@ -751,7 +751,7 @@ describe("CustomerController", () => {
     });
 
     it("should return a 500 error when an unexpected error occurs", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       mockRequest.params = { id: customerId };
 
       jest
@@ -781,7 +781,7 @@ describe("CustomerController", () => {
       };
 
       const mockCustomer = new Customer(
-        "12345678a",
+        "1234567890abcdefghijklmn",
         "John Doe",
         "john.doe@example.com",
         1000
@@ -799,7 +799,7 @@ describe("CustomerController", () => {
       expect(mockResponse.json).toHaveBeenCalledWith(mockCustomer);
 
       // Now we are going to add credit to the customer
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       const creditToAdd = 100;
       mockRequest.body = { id: customerId, amount: creditToAdd };
 
@@ -840,7 +840,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 404 when adding credit to a non-existing customer", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       const creditToAdd = 100;
       mockRequest.params = { id: customerId };
       mockRequest.body = { credit: creditToAdd };
@@ -883,7 +883,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 452 when adding negative credit", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       const negativeCredit = -50;
       mockRequest.params = { id: customerId };
       mockRequest.body = { credit: negativeCredit };
@@ -904,7 +904,7 @@ describe("CustomerController", () => {
     });
 
     it("should return 400 when adding invalid credit", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       const invalidCredit = "invalid";
       mockRequest.params = { id: customerId };
       mockRequest.body = { credit: invalidCredit };
@@ -928,7 +928,7 @@ describe("CustomerController", () => {
     });
 
     it("should return a 500 error when an unexpected error occurs", async () => {
-      const customerId = "12345678a";
+      const customerId = "1234567890abcdefghijklmn";
       const creditToAdd = 100;
       mockRequest.params = { id: customerId };
       mockRequest.body = { credit: creditToAdd };
@@ -961,7 +961,7 @@ describe("CustomerController", () => {
     } as unknown as Response;
 
     const sortedCustomersMock = [
-      new Customer("12345678a", "Customer One", "one@example.com", 300),
+      new Customer("1234567890abcdefghijklmn", "Customer One", "one@example.com", 300),
       new Customer("23456789a", "Customer Two", "two@example.com", 200),
       new Customer("34567890a", "Customer Three", "three@example.com", 100),
     ];
