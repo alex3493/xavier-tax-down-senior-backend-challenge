@@ -6,7 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
 import {MongoDBCustomerRepository} from "./persistence/repositories/MongoDBCustomerRepository";
 import {InMemoryCustomerRepository} from "./persistence/repositories/InMemoryCustomerRepository";
-import {validateJson} from "../middleware/validateJsonMiddleware";
+import {validateJson} from "../middleware/ValidateJsonMiddleware";
 
 // Load environment variables from .env file
 dotenv.config();
